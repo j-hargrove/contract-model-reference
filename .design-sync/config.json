@@ -1,0 +1,9 @@
+{
+  "projectId": "62b66f65-2740-4eea-8927-b0e466c6f8ad",
+  "shape": "package",
+  "pkg": "contract-model-reference",
+  "globalName": "ContractModelReference",
+  "tsconfig": "tsconfig.json",
+  "srcDir": "src/components",
+  "readmeHeader": ".design-sync/conventions.md"
+}
