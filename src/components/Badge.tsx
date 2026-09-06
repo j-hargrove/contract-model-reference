@@ -13,7 +13,7 @@ const VARIANT_COLOR: Record<BadgeVariant, string> = {
   danger: 'oklch(57.7% 0.245 27.325)',
   neutral: 'oklch(70% 0.02 260)',
 };
-const PADDING_X = '8px'; // spacing.sm
+const PADDING_X = '12px'; // spacing.sm
 const RADIUS = '6px'; // radius.sm
 
 export function Badge({ label, variant = 'neutral', subtle }: BadgeProps) {

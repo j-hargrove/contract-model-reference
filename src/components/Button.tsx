@@ -15,7 +15,7 @@ const VARIANT_STYLES: Record<ButtonVariant, { bg: string; hoverBg: string; fg: s
   secondary: { bg: 'oklch(55% 0.01 260)', hoverBg: 'oklch(46% 0.01 260)', fg: 'oklch(100% 0 0)' },
   danger: { bg: 'oklch(57.7% 0.245 27.325)', hoverBg: 'oklch(49% 0.22 27.325)', fg: 'oklch(100% 0 0)' },
 };
-const PADDING = '8px 16px'; // spacing.sm spacing.md
+const PADDING = '12px 16px'; // spacing.sm spacing.md
 const RADIUS = '6px'; // radius.sm
 
 export function Button({ label, onClick, disabled, variant = 'primary', previewState }: ButtonProps) {
