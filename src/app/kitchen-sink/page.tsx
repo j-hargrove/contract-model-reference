@@ -36,8 +36,8 @@ const ISOLATED_RENDERERS: Record<string, (variant: string, state: string) => Rea
 
 const USER_CARD_SAMPLES: Array<ComponentProps<typeof UserCard>> = [
   { name: 'Ada Lovelace', avatarUrl: 'https://i.pravatar.cc/150?img=5', status: 'success', variant: 'expanded' },
-  { name: 'Grace Hopper', status: 'warning', variant: 'expanded' },
-  { name: 'Alan Turing', status: 'danger', variant: 'compact' },
+  { name: 'Grace Hopper', avatarUrl: 'https://i.pravatar.cc/150?img=45', status: 'warning', variant: 'expanded' },
+  { name: 'Alan Turing', avatarUrl: 'https://i.pravatar.cc/150?img=12', status: 'danger', variant: 'compact' },
   { name: 'Katherine Johnson', status: 'neutral', variant: 'expanded', loading: true },
 ];
 
