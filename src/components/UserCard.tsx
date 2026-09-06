@@ -13,7 +13,7 @@ interface UserCardProps {
 
 // Mirrors contract/tokens.json as of the last contract-committer sync.
 const GAP = '16px'; // spacing.md
-const PADDING = '8px'; // spacing.sm
+const PADDING = '12px'; // spacing.sm
 const RADIUS = '6px'; // radius.sm
 const BORDER_COLOR = 'oklch(70% 0.02 260)'; // color.neutral
 

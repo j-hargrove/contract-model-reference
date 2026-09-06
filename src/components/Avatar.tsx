@@ -10,7 +10,7 @@ interface AvatarProps {
 // Mirrors contract/tokens.json as of the last contract-committer sync.
 const SIZE_PX: Record<AvatarSize, number> = { sm: 24, md: 40, lg: 64 };
 const BORDER_RADIUS = '9999px'; // radius.full
-const BORDER_WIDTH = '8px'; // spacing.sm
+const BORDER_WIDTH = '12px'; // spacing.sm
 const PLACEHOLDER_BG = 'oklch(70% 0.02 260)'; // color.neutral
 
 export function Avatar({ src, alt, size = 'md', loading }: AvatarProps) {
