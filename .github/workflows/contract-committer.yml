@@ -1,29 +1,29 @@
 name: contract-committer
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches: [main]
     paths: ['contract/**']
 jobs:
   update-component:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          ref: main
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
       - run: npm ci
       - run: npm install -g @anthropic-ai/claude-code
       - name: Save contract diff
         run: |
-          BEFORE="${{ github.event.before }}"
-          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
-            BEFORE=$(git hash-object -t tree /dev/null)
-          fi
-          git diff "$BEFORE" ${{ github.sha }} -- contract/ > /tmp/contract.diff
-      - run: git checkout -b contract-sync/${{ github.sha }}
+          git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.merge_commit_sha }} -- contract/ > /tmp/contract.diff
+      - run: git checkout -b contract-sync/${{ github.event.pull_request.merge_commit_sha }}
       - name: Run claude -p
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -64,10 +64,10 @@ jobs:
           fi
           git config user.name "claude-committer[bot]"
           git config user.email "claude-committer@users.noreply.github.com"
-          git commit -m "Sync components with contract change ${{ github.sha }}"
-          git push origin HEAD:contract-sync/${{ github.sha }}
+          git commit -m "Sync components with contract change ${{ github.event.pull_request.merge_commit_sha }} (from #${{ github.event.pull_request.number }})"
+          git push origin HEAD:contract-sync/${{ github.event.pull_request.merge_commit_sha }}
           gh pr create \
-            --title "Sync components with contract change ${{ github.sha }}" \
-            --body "Automated by claude -p in response to a contract/** change in ${{ github.sha }}. Review before merging." \
+            --title "Sync components with contract change ${{ github.event.pull_request.merge_commit_sha }}" \
+            --body "Automated by claude -p in response to contract/** changes merged in #${{ github.event.pull_request.number }}. Review before merging." \
             --base main \
-            --head contract-sync/${{ github.sha }}
+            --head contract-sync/${{ github.event.pull_request.merge_commit_sha }}

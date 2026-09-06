@@ -1,0 +1,4 @@
+# Contract changes are the review checkpoint the Contract Model depends on
+# (see SPEC.md "Governance"). A PR touching contract/** requests review from
+# the owner(s) below.
+/contract/ @j-hargrove

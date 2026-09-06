@@ -66,15 +66,24 @@ Not automated. When a new component or variant is needed:
 2. Ask for the proposed addition in the same schema shape.
 3. A human reviews the proposal before it becomes a commit — this is the checkpoint, not a formality.
 
+## Governance: contract changes require review
+
+`contract/**` is protected the same way application code is — a direct push to `main` doesn't count as an accepted proposal:
+
+1. Contract edits land on a branch and go through a PR into `main`, same as any other change. Branch protection on `main` blocks direct pushes.
+2. `.github/CODEOWNERS` maps `/contract/` to the maintainer, so a PR touching it requests that review automatically.
+3. `contract-committer` (see below) triggers on the PR being **merged**, not on every push — so the generated implementation PR only ever comes from a contract change a human already approved, not from an unreviewed push straight to `main`.
+
+**Known gap:** required-approval count is intentionally not enforced (`enforce_admins` blocks direct pushes, but `required_approving_review_count` is 0) because this repo currently has one maintainer, and GitHub doesn't count self-approval — enforcing it would make `main` unmergeable. Enable `required_approving_review_count >= 1` once a second contributor joins.
+
 ## The Committer step (headless, this is what Claude Code builds and runs)
 
-Once a proposal is accepted:
-1. Commit the updated `contracts.json` / `tokens.json`.
-2. A `claude -p` invocation (triggered by the GitHub Action on push to `/contract/**`) reads the diff and:
+Once a proposal is accepted and its PR is merged to `main`:
+1. A `claude -p` invocation (triggered by the GitHub Action on the `contract/**` PR's merge, not on every push) reads the diff and:
    - Generates or updates the corresponding component implementation in `/src/components`
    - Regenerates the kitchen-sink page's variant list from `contracts.json`
    - Opens a PR with the changes
-3. Use `--allowedTools "Read,Edit,Bash"` and `--permission-mode acceptEdits` so file edits apply without a prompt, while anything unusual still surfaces in the PR diff for review.
+2. Use `--allowedTools "Read,Edit,Bash"` and `--permission-mode acceptEdits` so file edits apply without a prompt, while anything unusual still surfaces in the PR diff for review.
 
 ## The kitchen-sink page
 
