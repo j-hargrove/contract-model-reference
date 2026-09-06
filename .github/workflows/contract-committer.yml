@@ -17,7 +17,12 @@ jobs:
       - run: npm ci
       - run: npm install -g @anthropic-ai/claude-code
       - name: Save contract diff
-        run: git diff ${{ github.event.before }} ${{ github.sha }} -- contract/ > /tmp/contract.diff
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            BEFORE=$(git hash-object -t tree /dev/null)
+          fi
+          git diff "$BEFORE" ${{ github.sha }} -- contract/ > /tmp/contract.diff
       - run: git checkout -b contract-sync/${{ github.sha }}
       - name: Run claude -p
         env:
