@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Component Contracts",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "properties": {
+      "variants": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+      "states": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+      "props": {
+        "type": "object",
+        "additionalProperties": { "type": "string", "enum": ["string", "number", "boolean", "function"] }
+      },
+      "tokens": { "type": "array", "items": { "type": "string" } },
+      "composition": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "prop": { "type": "string" },
+            "as": { "type": "string" }
+          },
+          "required": ["prop", "as"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": ["variants", "states", "props", "tokens"],
+    "additionalProperties": false
+  }
+}

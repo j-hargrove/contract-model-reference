@@ -1,0 +1,31 @@
+{
+  "Avatar": {
+    "variants": ["sm", "md", "lg"],
+    "states": ["default", "loading"],
+    "props": { "src": "string", "alt": "string" },
+    "tokens": ["radius.full", "spacing.sm", "color.neutral"]
+  },
+  "Badge": {
+    "variants": ["success", "warning", "danger", "neutral"],
+    "states": ["default", "subtle"],
+    "props": { "label": "string" },
+    "tokens": ["color.success", "color.warning", "color.danger", "color.neutral", "spacing.sm", "radius.sm"]
+  },
+  "Button": {
+    "variants": ["primary", "secondary", "danger"],
+    "states": ["default", "hover", "disabled"],
+    "props": { "label": "string", "onClick": "function", "disabled": "boolean" },
+    "tokens": ["color.primary", "color.secondary", "color.danger", "color.on-primary", "spacing.sm", "spacing.md", "radius.sm"]
+  },
+  "UserCard": {
+    "variants": ["compact", "expanded"],
+    "states": ["default", "loading"],
+    "props": { "name": "string", "avatarUrl": "string", "status": "string", "onAction": "function" },
+    "tokens": ["spacing.sm", "spacing.md", "radius.sm"],
+    "composition": {
+      "Avatar": { "prop": "avatarUrl", "as": "leading visual; size is 'sm' in compact variant, 'md' in expanded" },
+      "Badge": { "prop": "status", "as": "status indicator next to name; Badge variant = the status value" },
+      "Button": { "prop": "onAction", "as": "trailing primary action; hidden entirely in compact variant" }
+    }
+  }
+}

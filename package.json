@@ -1,0 +1,28 @@
+{
+  "name": "contract-model-reference",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "validate:contracts": "ajv validate -s contract/schema/tokens.schema.json -d contract/tokens.json --spec=draft7 --strict=false && ajv validate -s contract/schema/contracts.schema.json -d contract/contracts.json --spec=draft7 --strict=false",
+    "test:visual": "playwright test"
+  },
+  "dependencies": {
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "ajv-cli": "^5.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.4",
+    "typescript": "^5"
+  }
+}
