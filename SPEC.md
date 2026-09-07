@@ -59,6 +59,8 @@ Scope: one demo component (e.g. a Button) with 2–3 variants and 2–3 states, 
 
 Validate both against JSON Schema on every commit (`contract-sync.yml`). A commit that breaks schema should fail CI, not merge silently.
 
+**Known gap:** `npm audit` flags a high-severity prototype pollution vulnerability in `fast-json-patch`, a transitive dependency of `ajv-cli`. The suggested fix (`npm audit fix --force`) downgrades `ajv-cli` to 0.6.0, which breaks the `--spec`/`--strict` flags `validate:contracts` depends on (see the earlier fix reverting that exact downgrade). Not fixed here because `ajv-cli` only validates trusted local schema files in CI, never untrusted input — real-world exposure is low. Correct long-term fix is a newer `ajv-cli` major version once one exists that both patches this and keeps CLI compatibility, or migrating off `ajv-cli` to the `ajv` library directly.
+
 ## The Proposer step (manual, outside CI)
 
 Not automated. When a new component or variant is needed:
