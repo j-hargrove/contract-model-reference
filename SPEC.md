@@ -95,6 +95,8 @@ Gate this route out of the production build (env flag or auth check) — it shou
 
 `visual-diff.yml`: on every PR, build the app, screenshot the kitchen-sink route (Playwright), diff against the committed baseline images. Fail the check on any unreviewed visual change; update the baseline only as part of an intentional PR.
 
+**Known gap:** the committed baselines were generated locally, not inside an environment matching CI, and don't reliably match GitHub's runner — observed ~58px height discrepancy on the kitchen-sink page, likely a Playwright/font-rendering difference between local Ubuntu and GitHub's runner. This is why `visual-diff` isn't a required status check: a real, unreviewed visual regression could pass unnoticed if it happens to fall within the same discrepancy the environment mismatch already produces. Correct fix is generating baselines inside a Docker environment matching CI's, not solved here.
+
 ## Definition of done
 
 - [ ] `tokens.json` + `contracts.json` exist, schema-validated in CI
