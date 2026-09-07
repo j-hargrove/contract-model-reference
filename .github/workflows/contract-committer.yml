@@ -47,11 +47,24 @@ jobs:
              anything under contract/.
           7. Keep changes minimal: no new dependencies, no unrequested props, no speculative
              abstraction, no comments beyond what's needed to note the token source.
+          8. Write /tmp/pr-summary.md accounting for the PR honestly, since it may end up
+             describing unrelated pre-existing drift rather than a real response to the diff
+             that triggered this run:
+             - List each token that actually changed in /tmp/contract.diff. For each one, say
+               whether it's referenced by any component's "tokens" list in contracts.json. If it
+               is, describe what you changed in response. If it is NOT referenced anywhere, say so
+               explicitly (e.g. "No change needed for the triggering edit: spacing.xs is not
+               referenced by any component.") - do not imply you responded to it if you didn't.
+             - Separately, list any OTHER literal-value mismatch you found and fixed while
+               reconciling components against tokens.json that is NOT one of the tokens that
+               changed in /tmp/contract.diff (pre-existing drift). For each, name the stale
+               literal, the current tokens.json value, and that it predates this change.
+             - If you made no file changes at all, still write this file explaining why.
 
           Apply edits directly.
           PROMPT
           )" \
-            --allowedTools "Read,Edit,Bash" \
+            --allowedTools "Read,Edit,Write,Bash" \
             --permission-mode acceptEdits
       - name: Commit and open PR
         env:
@@ -66,8 +79,15 @@ jobs:
           git config user.email "claude-committer@users.noreply.github.com"
           git commit -m "Sync components with contract change ${{ github.event.pull_request.merge_commit_sha }} (from #${{ github.event.pull_request.number }})"
           git push origin HEAD:contract-sync/${{ github.event.pull_request.merge_commit_sha }}
+          {
+            echo "Automated by claude -p, run after #${{ github.event.pull_request.number }} merged (${{ github.event.pull_request.merge_commit_sha }}). This PR may not be a direct response to that change - see the accounting below."
+            echo
+            cat /tmp/pr-summary.md
+            echo
+            echo "Review before merging."
+          } > /tmp/pr-body.md
           gh pr create \
             --title "Sync components with contract change ${{ github.event.pull_request.merge_commit_sha }}" \
-            --body "Automated by claude -p in response to contract/** changes merged in #${{ github.event.pull_request.number }}. Review before merging." \
+            --body-file /tmp/pr-body.md \
             --base main \
             --head contract-sync/${{ github.event.pull_request.merge_commit_sha }}
